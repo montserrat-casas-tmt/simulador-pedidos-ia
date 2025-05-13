@@ -79,6 +79,23 @@ button:hover {
   margin-bottom: 1rem;
   border-radius: 4px;
   border: 1px solid #ddd;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.producto-imagen {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.5rem;
+  background-color: white;
+}
+
+.producto-info {
+  flex: 1;
 }
 
 .producto input[type="number"] {

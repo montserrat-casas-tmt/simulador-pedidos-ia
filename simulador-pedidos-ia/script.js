@@ -75,10 +75,14 @@ function mostrarProductosFiltrados(productos) {
     const el = document.createElement('div');
     el.className = 'producto';
     el.innerHTML = `
-      <strong>${p.descripcion}</strong><br/>
-      Cantidad: <input type="number" min="0" value="1" onchange="agregarProducto('${p.id}', this.value)" />
-      ${p.unidad}<br/>
-      Precio unitario: ${p.precio.toFixed(2)} €
+      <img src="${p.imagen}" alt="${p.descripcion}" class="producto-imagen" 
+           onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'">
+      <div class="producto-info">
+        <strong>${p.descripcion}</strong><br/>
+        Cantidad: <input type="number" min="0" value="1" onchange="agregarProducto('${p.id}', this.value)" />
+        ${p.unidad}<br/>
+        Precio unitario: ${p.precio.toFixed(2)} €
+      </div>
     `;
     div.appendChild(el);
   });
@@ -112,11 +116,15 @@ function mostrarProductos() {
     const el = document.createElement('div');
     el.className = 'producto';
     el.innerHTML = `
-      <strong>${p.descripcion}</strong><br/>
-      Cantidad: <input type="number" min="0" value="${p.cantidad}" onchange="actualizarCantidad(${i}, this.value)" />
-      ${p.unidad}<br/>
-      Precio unitario: ${p.precio.toFixed(2)} €<br/>
-      Total: <span id="total-${i}">${(p.precio * p.cantidad).toFixed(2)}</span> €
+      <img src="${p.imagen}" alt="${p.descripcion}" class="producto-imagen" 
+           onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'">
+      <div class="producto-info">
+        <strong>${p.descripcion}</strong><br/>
+        Cantidad: <input type="number" min="0" value="${p.cantidad}" onchange="actualizarCantidad(${i}, this.value)" />
+        ${p.unidad}<br/>
+        Precio unitario: ${p.precio.toFixed(2)} €<br/>
+        Total: <span id="total-${i}">${(p.precio * p.cantidad).toFixed(2)}</span> €
+      </div>
     `;
     div.appendChild(el);
   });
