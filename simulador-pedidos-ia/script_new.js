@@ -1,6 +1,6 @@
 // Estado global de la aplicación
 let products = [];
-let cart = [];
+let cart = []; // Ahora incluirá { product, quantity }
 
 // Elementos del DOM
 const elements = {
@@ -81,14 +81,23 @@ const updateCart = () => {
         const itemElement = document.createElement('div');
         itemElement.className = 'flex justify-between items-center mb-2';
         itemElement.innerHTML = `
-            <span class="flex-grow">${item.name}</span>
-            <span class="mx-4">${formatPrice(item.price)}</span>
-            <button class="remove-from-cart text-red-600 hover:text-red-800" data-product-id="${item.id}">
+            <span class="flex-grow">${item.product.name}</span>
+            <div class="flex items-center mx-2">
+                <button class="quantity-btn decrease text-gray-600 px-2" data-product-id="${item.product.id}">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <span class="mx-2">${item.quantity}</span>
+                <button class="quantity-btn increase text-gray-600 px-2" data-product-id="${item.product.id}">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            <span class="mx-4">${formatPrice(item.product.price * item.quantity)}</span>
+            <button class="remove-from-cart text-red-600 hover:text-red-800" data-product-id="${item.product.id}">
                 <i class="fas fa-trash"></i>
             </button>
         `;
         elements.cartItems.appendChild(itemElement);
-        total += Number(item.price);
+        total += Number(item.product.price) * item.quantity;
     });
 
     elements.cartTotal.textContent = formatPrice(total);
@@ -126,10 +135,18 @@ const handleFileUpload = (event) => {
 
 // Generar pedido en formato JSON
 const generateOrder = () => {
+    const orderItems = cart.map(item => ({
+        id: item.product.id,
+        name: item.product.name,
+        price: item.product.price,
+        quantity: item.quantity,
+        total: item.product.price * item.quantity
+    }));
+    
     const order = {
         date: new Date().toISOString(),
-        items: cart,
-        total: cart.reduce((sum, item) => sum + Number(item.price), 0)
+        items: orderItems,
+        total: cart.reduce((sum, item) => sum + (Number(item.product.price) * item.quantity), 0)
     };
 
     elements.jsonOutput.textContent = JSON.stringify(order, null, 2);
@@ -156,19 +173,43 @@ document.addEventListener('DOMContentLoaded', () => {
         if (addButton) {
             const productId = Number(addButton.dataset.productId);
             const product = products.find(p => p.id === productId);
-            if (product && !cart.some(item => item.id === productId)) {
-                cart.push(product);
-                updateCart();
+            
+            const existingItem = cart.find(item => item.product.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    product: product,
+                    quantity: 1
+                });
             }
+            updateCart();
         }
     });
 
     elements.cartItems.addEventListener('click', (e) => {
         const removeButton = e.target.closest('.remove-from-cart');
+        const decreaseButton = e.target.closest('.quantity-btn.decrease');
+        const increaseButton = e.target.closest('.quantity-btn.increase');
+        
         if (removeButton) {
             const productId = Number(removeButton.dataset.productId);
-            cart = cart.filter(item => item.id !== productId);
+            cart = cart.filter(item => item.product.id !== productId);
             updateCart();
+        } else if (decreaseButton) {
+            const productId = Number(decreaseButton.dataset.productId);
+            const item = cart.find(item => item.product.id === productId);
+            if (item && item.quantity > 1) {
+                item.quantity -= 1;
+                updateCart();
+            }
+        } else if (increaseButton) {
+            const productId = Number(increaseButton.dataset.productId);
+            const item = cart.find(item => item.product.id === productId);
+            if (item) {
+                item.quantity += 1;
+                updateCart();
+            }
         }
     });
 
