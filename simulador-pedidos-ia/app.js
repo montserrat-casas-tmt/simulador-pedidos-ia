@@ -1,26 +1,25 @@
-import { useState } from 'react'
-import { MagnifyingGlassIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+const { useState } = React;
 
 function App() {
-  const [input, setInput] = useState('')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [notas, setNotas] = useState('')
+  const [input, setInput] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [notas, setNotas] = useState('');
 
   const handleSugerirProductos = () => {
     // Implementar lógica de sugerencia
-    console.log('Sugerir productos')
-  }
+    console.log('Sugerir productos');
+  };
 
   const handleLimpiarPedido = () => {
-    setInput('')
-    setNotas('')
-  }
+    setInput('');
+    setNotas('');
+  };
 
   const handleFiltrarProductos = () => {
     // Implementar lógica de filtrado
-    console.log('Filtrar productos')
-  }
+    console.log('Filtrar productos');
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -42,14 +41,18 @@ function App() {
               className="btn btn-primary flex items-center gap-2"
               onClick={handleSugerirProductos}
             >
-              <PlusIcon className="h-5 w-5" />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+              </svg>
               Sugerir productos
             </button>
             <button
               className="btn btn-secondary flex items-center gap-2"
               onClick={handleLimpiarPedido}
             >
-              <TrashIcon className="h-5 w-5" />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
               Limpiar pedido
             </button>
           </div>
@@ -60,7 +63,9 @@ function App() {
           <div className="flex gap-4 mb-4">
             <div className="flex-1">
               <div className="relative">
-                <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                </svg>
                 <input
                   type="text"
                   className="input pl-10"
@@ -104,7 +109,8 @@ function App() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+// Renderizar la aplicación
+ReactDOM.createRoot(document.getElementById('root')).render(<App />); 

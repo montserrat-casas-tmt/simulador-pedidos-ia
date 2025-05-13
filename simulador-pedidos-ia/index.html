@@ -1,65 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Simulador de Pedidos IA</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="container">
-    <h1>Simulador de Pedidos Automatizado con IA (modo local)</h1>
-    
-    <div class="input-section">
-      <textarea id="input" placeholder="Describe tu necesidad..."></textarea>
-      <div class="button-group">
-        <button onclick="sugerirProductos()">Sugerir productos</button>
-        <button onclick="limpiarPedido()">Limpiar pedido</button>
-      </div>
-    </div>
-
-    <div class="search-section">
-      <input type="text" id="searchInput" placeholder="Buscar productos..." onkeyup="filtrarProductos()">
-      <select id="categoriaFilter" onchange="filtrarProductos()">
-        <option value="">Todas las categorías</option>
-        <option value="cable">Cables</option>
-        <option value="tubo">Tubos</option>
-        <option value="caja">Cajas</option>
-        <option value="proteccion">Protección</option>
-        <option value="iluminacion">Iluminación</option>
-      </select>
-    </div>
-
-    <div class="catalogo-upload-section" style="margin-bottom: 1rem;">
-      <input type="file" id="catalogoFile" accept=".csv" />
-      <button onclick="ampliarCatalogo()">Ampliar catálogo</button>
-    </div>
-
-    <div id="productos"></div>
-
-    <div class="resumen-pedido">
-      <h3>Resumen del Pedido</h3>
-      <div id="resumen"></div>
-    </div>
-
-    <div class="notas-section">
-      <textarea id="notas" placeholder="Añade notas al pedido..."></textarea>
-    </div>
-
-    <div class="actions-section">
-      <button onclick="generarJSON()">Generar Pedido (JSON)</button>
-      <button onclick="guardarPedido()">Guardar Pedido</button>
-      <button onclick="copiarJSON()">Copiar JSON</button>
-      <button onclick="descargarJSON()">Guardar como .json</button>
-    </div>
-
-    <div class="pedidos-guardados">
-      <h3>Pedidos Guardados</h3>
-      <div id="listaPedidos"></div>
-    </div>
-
-    <pre id="resultado"></pre>
-  </div>
-  <script src="catalogo.js"></script>
-  <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulador de Pedidos IA</title>
+    <!-- Tailwind CSS desde CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React y ReactDOM desde CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel para JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Heroicons -->
+    <script src="https://unpkg.com/@heroicons/react@2.0.18/24/outline/index.js"></script>
+    <style>
+      .btn {
+        @apply px-4 py-2 rounded-md font-medium transition-colors duration-200;
+      }
+      .btn-primary {
+        @apply bg-blue-600 text-white hover:bg-blue-700;
+      }
+      .btn-secondary {
+        @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+      }
+      .input {
+        @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <div id="root"></div>
+    <script type="text/babel" src="app.js"></script>
+  </body>
 </html>
