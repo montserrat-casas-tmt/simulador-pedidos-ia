@@ -50,12 +50,19 @@ function sugerirProductos() {
     return;
   }
 
-  // Si no hay coincidencias, buscar en el catálogo
+  // Búsqueda avanzada en descripción (singular/plural)
   if (input.trim() !== "") {
-    const terminos = input.split(' ');
-    productosSugeridos = CATALOGO
-      .filter(p => terminos.some(t => p.descripcion.toLowerCase().includes(t)))
-      .map(p => ({ id: p.id, cantidad: 1 }));
+    const terminos = input.split(/\s+/).map(t => t.trim()).filter(Boolean);
+    productosSugeridos = CATALOGO.filter(p => {
+      const desc = (p.descripcion || '').toLowerCase();
+      return terminos.some(t => {
+        // Coincidencia exacta, singular/plural simple
+        if (desc.includes(t)) return true;
+        if (t.endsWith('s') && desc.includes(t.slice(0, -1))) return true;
+        if (!t.endsWith('s') && desc.includes(t + 's')) return true;
+        return false;
+      });
+    }).map(p => ({ id: p.id, cantidad: 1 }));
   }
 
   // Si sigue sin haber sugerencias, sugerir 5 productos aleatorios
@@ -263,6 +270,69 @@ function descargarJSON() {
   a.download = `pedido_${new Date().toISOString().slice(0,10)}.json`;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+function ampliarCatalogo() {
+  const input = document.getElementById('catalogoFile');
+  if (!input.files || !input.files[0]) {
+    alert('Selecciona un archivo CSV válido.');
+    return;
+  }
+  const file = input.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const texto = e.target.result;
+    const lineas = texto.split(/\r?\n/).filter(l => l.trim().length > 0);
+    if (lineas.length < 2) {
+      alert('El archivo no contiene datos.');
+      return;
+    }
+    const cabecera = lineas[0].split(';');
+    const idxRef = cabecera.findIndex(c => c.toLowerCase().includes('referencia'));
+    const idxDesc = cabecera.findIndex(c => c.toLowerCase().includes('descripcion'));
+    const idxImg = cabecera.findIndex(c => c.toLowerCase().includes('contenido'));
+    if (idxRef === -1 || idxImg === -1) {
+      alert('El archivo debe tener columnas Referencia y Contenido.');
+      return;
+    }
+    let nuevos = 0;
+    for (let i = 1; i < lineas.length; i++) {
+      const cols = lineas[i].split(';');
+      const id = cols[idxRef]?.trim();
+      if (!id) continue;
+      if (window.CATALOGO.find(p => p.id === id)) continue;
+      const descripcion = (cols[idxDesc] && cols[idxDesc].trim()) || id;
+      const imagen = cols[idxImg]?.trim();
+      window.CATALOGO.push({
+        id,
+        descripcion,
+        unidad: 'ud',
+        precio: 50,
+        categoria: 'AMPLIADO',
+        imagen
+      });
+      nuevos++;
+    }
+    mostrarMensajeCarga(`Catálogo ampliado con éxito. Productos añadidos: ${nuevos}`);
+  };
+  reader.readAsText(file);
+}
+
+function mostrarMensajeCarga(mensaje) {
+  let div = document.getElementById('mensaje-carga');
+  if (!div) {
+    div = document.createElement('div');
+    div.id = 'mensaje-carga';
+    div.style.margin = '1rem 0';
+    div.style.padding = '0.5rem 1rem';
+    div.style.background = '#e8f4f8';
+    div.style.border = '1px solid #3498db';
+    div.style.color = '#2c3e50';
+    div.style.borderRadius = '4px';
+    document.querySelector('.catalogo-upload-section').appendChild(div);
+  }
+  div.textContent = mensaje;
+  setTimeout(() => { div.textContent = ''; }, 5000);
 }
 
 // Inicializar la vista

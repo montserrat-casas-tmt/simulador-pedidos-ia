@@ -32,3 +32,4 @@ const CATALOGO = [
   {id: "AZIATACTOZCSG", descripcion: "TERMOSTATO TACTO INNOBUS SUPERFICIE AIR CABLE GRIS", unidad: "ud", precio: 70, categoria: "CLIMATIZACION", imagen: "http://media.telematel.com/assets/airzone-termostato-tacto-innobus-superficie-air-cable-gris--aziatactozcsg-1083000049-9ec2_500.jpg"}
   // ...continúa con el resto de productos
 ];
+window.CATALOGO = CATALOGO;
