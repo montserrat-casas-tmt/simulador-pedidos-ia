@@ -69,3 +69,21 @@ function generarJSON() {
   };
   document.getElementById('resultado').textContent = JSON.stringify(pedido, null, 2);
 }
+
+function copiarJSON() {
+  const texto = document.getElementById('resultado').textContent;
+  navigator.clipboard.writeText(texto).then(() => {
+    alert('JSON copiado al portapapeles.');
+  });
+}
+
+function descargarJSON() {
+  const texto = document.getElementById('resultado').textContent;
+  const blob = new Blob([texto], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "pedido.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}

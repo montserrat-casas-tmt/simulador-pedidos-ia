@@ -1,0 +1,74 @@
+{
+  "cliente": {
+    "id": "CFICT",
+    "nombre": "Cliente ficticio"
+  },
+  "fecha": "2025-05-13",
+  "total_estimado": 257.6,
+  "lineas": [
+    {
+      "producto_id": "CAB-3X2.5",
+      "descripcion": "Cable NYY 3x2,5mm²",
+      "cantidad": 100,
+      "unidad": "m",
+      "precio_unitario": 0.85,
+      "importe_linea": 85
+    },
+    {
+      "producto_id": "TUB-20",
+      "descripcion": "Tubo corrugado Ø20mm",
+      "cantidad": 100,
+      "unidad": "m",
+      "precio_unitario": 0.35,
+      "importe_linea": 35
+    },
+    {
+      "producto_id": "AUT-10A",
+      "descripcion": "Interruptor automático 1P+N 10A curva C",
+      "cantidad": 6,
+      "unidad": "ud",
+      "precio_unitario": 4.2,
+      "importe_linea": 25.2
+    },
+    {
+      "producto_id": "DIF-40A30",
+      "descripcion": "Interruptor diferencial 40A 30mA",
+      "cantidad": 1,
+      "unidad": "ud",
+      "precio_unitario": 11.5,
+      "importe_linea": 11.5
+    },
+    {
+      "producto_id": "LAM-LED18",
+      "descripcion": "Pantalla LED 18W 120cm IP44",
+      "cantidad": 6,
+      "unidad": "ud",
+      "precio_unitario": 12.3,
+      "importe_linea": 73.8
+    },
+    {
+      "producto_id": "CJA-ELEC",
+      "descripcion": "Caja de empalmes IP65",
+      "cantidad": 6,
+      "unidad": "ud",
+      "precio_unitario": 2.75,
+      "importe_linea": 16.5
+    },
+    {
+      "producto_id": "CUD-DOM",
+      "descripcion": "Cuadro eléctrico 8-12 módulos superficie IP40",
+      "cantidad": 1,
+      "unidad": "ud",
+      "precio_unitario": 9.5,
+      "importe_linea": 9.5
+    },
+    {
+      "producto_id": "REG-12M",
+      "descripcion": "Regleta de conexiones 12 módulos",
+      "cantidad": 1,
+      "unidad": "ud",
+      "precio_unitario": 1.1,
+      "importe_linea": 1.1
+    }
+  ]
+}
