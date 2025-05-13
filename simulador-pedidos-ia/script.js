@@ -6,26 +6,18 @@ const ESCENARIOS = {
   oficina: {
     nombre: 'Oficina',
     productos: [
-      { id: 'CAB-3X2.5', cantidad: 100 },
-      { id: 'TUB-20', cantidad: 100 },
-      { id: 'AUT-10A', cantidad: 6 },
-      { id: 'DIF-40A30', cantidad: 1 },
-      { id: 'LAM-LED18', cantidad: 6 },
-      { id: 'CJA-ELEC', cantidad: 6 },
-      { id: 'CUD-DOM', cantidad: 1 },
-      { id: 'REG-12M', cantidad: 1 }
+      { id: 'VIR-P S (RTD0935)', cantidad: 2 },
+      { id: 'VIR-T N (RTD0929,N)', cantidad: 2 },
+      { id: 'VIR-BD L (RTD0928,N)', cantidad: 1 },
+      { id: 'ZLD-GL25RAL7035', cantidad: 1 }
     ]
   },
   taller: {
     nombre: 'Taller',
     productos: [
-      { id: 'CAB-5X6', cantidad: 50 },
-      { id: 'TUB-20', cantidad: 50 },
-      { id: 'AUT-20A', cantidad: 4 },
-      { id: 'DIF-40A30', cantidad: 1 },
-      { id: 'LAM-LED18', cantidad: 8 },
-      { id: 'CJA-ELEC', cantidad: 4 },
-      { id: 'CUD-DOM', cantidad: 1 }
+      { id: 'VIR-SBRTD0932B', cantidad: 2 },
+      { id: 'VIR-TBRTD0932B', cantidad: 1 },
+      { id: 'Z LD-G L25 (RAL9006,24V)', cantidad: 1 }
     ]
   }
 };
@@ -38,16 +30,42 @@ function sugerirProductos() {
   for (const [key, escenario] of Object.entries(ESCENARIOS)) {
     if (input.includes(key)) {
       productosSugeridos = [...escenario.productos];
-      break;
+      mostrarProductos();
+      actualizarResumen();
+      return;
     }
   }
 
+  // Si el usuario menciona 'climatizar', sugerir 5 productos aleatorios de climatización
+  if (input.includes('climatizar')) {
+    const productosClima = CATALOGO.filter(p => p.categoria && p.categoria.toLowerCase().includes('climatizacion'));
+    const indices = Array.from({length: productosClima.length}, (_, i) => i);
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    productosSugeridos = indices.slice(0, 5).map(i => ({ id: productosClima[i].id, cantidad: 1 }));
+    mostrarProductos();
+    actualizarResumen();
+    return;
+  }
+
   // Si no hay coincidencias, buscar en el catálogo
-  if (productosSugeridos.length === 0) {
+  if (input.trim() !== "") {
     const terminos = input.split(' ');
     productosSugeridos = CATALOGO
       .filter(p => terminos.some(t => p.descripcion.toLowerCase().includes(t)))
       .map(p => ({ id: p.id, cantidad: 1 }));
+  }
+
+  // Si sigue sin haber sugerencias, sugerir 5 productos aleatorios
+  if (productosSugeridos.length === 0) {
+    const indices = Array.from({length: CATALOGO.length}, (_, i) => i);
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    productosSugeridos = indices.slice(0, 5).map(i => ({ id: CATALOGO[i].id, cantidad: 1 }));
   }
 
   mostrarProductos();
@@ -67,16 +85,22 @@ function filtrarProductos() {
   mostrarProductosFiltrados(productosFiltrados);
 }
 
+function esImagenDirecta(url) {
+  return /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url);
+}
+
 function mostrarProductosFiltrados(productos) {
   const div = document.getElementById('productos');
   div.innerHTML = '';
 
   productos.forEach(p => {
+    const urlImagen = esImagenDirecta(p.imagen)
+      ? p.imagen
+      : 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg';
     const el = document.createElement('div');
     el.className = 'producto';
     el.innerHTML = `
-      <img src="${p.imagen}" alt="${p.descripcion}" class="producto-imagen" 
-           onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'">
+      <img src="${urlImagen}" alt="${p.descripcion}" class="producto-imagen">
       <div class="producto-info">
         <strong>${p.descripcion}</strong><br/>
         Cantidad: <input type="number" min="0" value="1" onchange="agregarProducto('${p.id}', this.value)" />
@@ -113,11 +137,13 @@ function mostrarProductos() {
   });
 
   productosSugeridos.forEach((p, i) => {
+    const urlImagen = esImagenDirecta(p.imagen)
+      ? p.imagen
+      : 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg';
     const el = document.createElement('div');
     el.className = 'producto';
     el.innerHTML = `
-      <img src="${p.imagen}" alt="${p.descripcion}" class="producto-imagen" 
-           onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'">
+      <img src="${urlImagen}" alt="${p.descripcion}" class="producto-imagen">
       <div class="producto-info">
         <strong>${p.descripcion}</strong><br/>
         Cantidad: <input type="number" min="0" value="${p.cantidad}" onchange="actualizarCantidad(${i}, this.value)" />
