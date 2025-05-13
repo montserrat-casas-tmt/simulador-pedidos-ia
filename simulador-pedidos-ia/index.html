@@ -1,12 +1,21 @@
 
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Simulador de Pedidos IA</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <title>Simulador de Pedidos IA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Simulador de Pedidos Automatizado con IA (modo local)</h1>
+    <textarea id="input" placeholder="Describe tu necesidad..."></textarea>
+    <button onclick="sugerirProductos()">Sugerir productos</button>
+    <div id="productos"></div>
+    <button onclick="generarJSON()">Generar Pedido (JSON)</button>
+    <pre id="resultado"></pre>
+  </div>
+  <script src="catalogo.js"></script>
+  <script src="script.js"></script>
+</body>
 </html>
